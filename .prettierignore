@@ -1,0 +1,10 @@
+node_modules
+.next
+out
+dist
+public
+plans
+evidence
+decisions
+context
+README.md

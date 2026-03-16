@@ -1,0 +1,33 @@
+# dependencies
+node_modules/
+
+# next
+.next/
+out/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# env
+.env
+.env.*
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# tests
+playwright-report/
+test-results/
+
+# internal process docs (requested)
+plans/
+context/
+evidence/
+
+# misc
+*.tsbuildinfo
