@@ -31,3 +31,6 @@ evidence/
 
 # misc
 *.tsbuildinfo
+
+# orchestration return contracts
+artifacts/returns/
