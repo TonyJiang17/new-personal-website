@@ -1,0 +1,5 @@
+delivery:
+  mode: pr
+  baseBranch: main
+  branchPrefix: factory
+  prDraft: false
