@@ -25,7 +25,6 @@ playwright-report/
 test-results/
 
 # internal process docs (requested)
-plans/
 context/
 evidence/
 
