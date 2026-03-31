@@ -191,20 +191,27 @@ export function terminalReducer(
       } else if (routeResult.type === "builtin" && routeResult.id === "help") {
         newTranscript.push(makeHelpEntry());
       } else if (routeResult.type === "builtin" && routeResult.id === "clear") {
-        // Clear — return early with wiped transcript
+        // Clear — wipe transcript and reset view to home (hero always persists)
         const newHistory = pushHistory(state.history, raw);
         return {
           state: {
             ...state,
+            route: "home",
             input: "",
             historyIndex: null,
             historyDraft: "",
             suggestions: [],
             suggestionIndex: null,
             history: newHistory,
-            transcript: [],
+            transcript: [
+              makeWelcomeEntry(),
+              { id: uid(), ts: Date.now(), kind: "section", route: "home" },
+            ],
           },
-          effects: [{ type: "PERSIST_HISTORY", history: newHistory }],
+          effects: [
+            { type: "PERSIST_HISTORY", history: newHistory },
+            { type: "NAVIGATE", route: "home" },
+          ],
         };
       } else if (routeResult.type === "action" && routeResult.action === "resume") {
         newTranscript.push({
@@ -361,7 +368,17 @@ export function terminalReducer(
     }
 
     case "CLEAR_TRANSCRIPT":
-      return { state: { ...state, transcript: [] }, effects: [] };
+      return {
+        state: {
+          ...state,
+          route: "home",
+          transcript: [
+            makeWelcomeEntry(),
+            { id: uid(), ts: Date.now(), kind: "section", route: "home" },
+          ],
+        },
+        effects: [{ type: "NAVIGATE", route: "home" }],
+      };
 
     default:
       return { state, effects: [] };
