@@ -6,10 +6,10 @@
 - Production deploy: out-of-band; explicitly requested by Tony
 
 ## Staging deployment
-- Staging URL: (paste)
-- Deployment method: Vercel
-- Git ref (branch/commit): (paste)
-- Date:
+- Staging URL: https://personalwebsiterebuild01-19x61ndle.vercel.app
+- Deployment method: Vercel (preview)
+- Git ref (branch/commit): main @ 890cdeb
+- Date: 2026-03-18
 
 ## Post-deploy smoke checklist (staging)
 - [ ] Site loads
@@ -40,6 +40,6 @@
 - Placeholder content remains in non-contact sections (expected for MVP)
 
 ## Stage 6 status
-- staging_deployed: pending
-- smoke_checks_pass: pending
+- staging_deployed: pass
+- smoke_checks_pass: pending (Tony to confirm via URL)
 - handoff_complete: pending

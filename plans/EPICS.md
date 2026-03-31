@@ -16,4 +16,4 @@ Rules:
 
 | Epic ID | Epic folder | Trigger | Status | PRD | Work Orders | Design Preview | Notes |
 |---|---|---|---|---|---|---|---|
-| epic_01_mvp_site_rebuild | plans/mvp_site_rebuild | intake | in_review | plans/mvp_site_rebuild/02_requirements.md | plans/mvp_site_rebuild/04_work_orders.md | (n/a) | MVP built + validated; needs Vercel staging deploy recorded in handoff QA |
+| epic_01_mvp_site_rebuild | plans/mvp_site_rebuild | intake | in_review | plans/mvp_site_rebuild/02_requirements.md | plans/mvp_site_rebuild/04_work_orders.md | (n/a) | Staging deployed: https://personalwebsiterebuild01-19x61ndle.vercel.app (needs smoke + signoff) |
