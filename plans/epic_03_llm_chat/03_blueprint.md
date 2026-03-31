@@ -23,9 +23,9 @@ No RAG, no vector DB.
 - Next.js route handler: `app/api/chat/route.ts`
 - Input: `{ message: string }`
 - Output: `{ reply: string, suggestedCommands?: string[] }`
-- Provider: Anthropic Claude (Sonnet-class)
+- Provider: OpenAI
 - Env vars:
-  - `ANTHROPIC_API_KEY`
+  - `OPENAI_API_KEY`
   - Optional: `CHAT_MODEL` (default to a sane model)
 
 ### 3) Terminal state + UI integration
@@ -55,4 +55,16 @@ No RAG, no vector DB.
 
 ## Open questions (implementation)
 1) Should we ship v1 without rate limiting, or add a minimal per-IP limiter now?
-2) Which exact Claude model string do we want as default?
+2) Which exact OpenAI model string do we want as default?
+
+## Deployment & Secrets
+- Framework/runtime: Next.js (Route Handler)
+- Secrets file (local): `.env.local`
+- Loader: Next.js native env loading
+- Required env vars:
+  - `OPENAI_API_KEY`
+- Optional env vars:
+  - `CHAT_MODEL` (default TBD; set in code)
+  - `CHAT_ENABLED` (default 1)
+- Staging env target: Vercel preview env vars
+- Production: out-of-band
