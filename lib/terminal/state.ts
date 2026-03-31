@@ -191,7 +191,7 @@ export function terminalReducer(
       } else if (routeResult.type === "builtin" && routeResult.id === "help") {
         newTranscript.push(makeHelpEntry());
       } else if (routeResult.type === "builtin" && routeResult.id === "clear") {
-        // Clear — return early with wiped transcript
+        // Clear — wipe prior transcript but re-render welcome + current section (WI-3.1)
         const newHistory = pushHistory(state.history, raw);
         return {
           state: {
@@ -202,7 +202,10 @@ export function terminalReducer(
             suggestions: [],
             suggestionIndex: null,
             history: newHistory,
-            transcript: [],
+            transcript: [
+              makeWelcomeEntry(),
+              { id: uid(), ts: Date.now(), kind: "section", route: state.route },
+            ],
           },
           effects: [{ type: "PERSIST_HISTORY", history: newHistory }],
         };
@@ -361,7 +364,16 @@ export function terminalReducer(
     }
 
     case "CLEAR_TRANSCRIPT":
-      return { state: { ...state, transcript: [] }, effects: [] };
+      return {
+        state: {
+          ...state,
+          transcript: [
+            makeWelcomeEntry(),
+            { id: uid(), ts: Date.now(), kind: "section", route: state.route },
+          ],
+        },
+        effects: [],
+      };
 
     default:
       return { state, effects: [] };

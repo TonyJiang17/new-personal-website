@@ -187,6 +187,32 @@ test.describe("resume link", () => {
   });
 });
 
+test.describe("clear command — WI-3.1 clear preserves hero", () => {
+  test("`/clear` keeps the welcome message visible", async ({ page }) => {
+    await page.goto("/");
+    // Navigate somewhere first to build up transcript
+    await typeCommand(page, "/about");
+    await typeCommand(page, "/clear");
+    await expect(page.getByText(/Welcome to Tony Jiang's terminal/)).toBeVisible();
+  });
+
+  test("`/clear` re-renders the current route section", async ({ page }) => {
+    await page.goto("/");
+    // /clear from home — hero section should still be visible in terminal pane
+    await typeCommand(page, "/clear");
+    // The hero renders Tony Jiang name in the terminal pane
+    await expect(page.getByText(/Tony Jiang/).first()).toBeVisible();
+  });
+
+  test("`/clear` after navigating keeps the active section", async ({ page }) => {
+    await page.goto("/");
+    await typeCommand(page, "/about");
+    await typeCommand(page, "/clear");
+    // About section heading should still appear (re-rendered after clear)
+    await expect(page.getByRole("heading", { name: /Product Manager/i }).first()).toBeVisible();
+  });
+});
+
 test.describe("project drill-down", () => {
   test("`/project <unknown>` shows friendly error", async ({ page }) => {
     await page.goto("/");
