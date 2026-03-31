@@ -39,6 +39,17 @@ export interface UnknownResult {
   suggestions: string[];
 }
 
+/**
+ * Input did not start with '/'. Not a command invocation.
+ * matchesCommand is the canonical command name if the text exactly matches
+ * a known name/alias, or null otherwise.
+ */
+export interface NonCommandResult {
+  type: "non_command";
+  raw: string;
+  matchesCommand: string | null;
+}
+
 /** Input was empty or whitespace — no-op. */
 export interface EmptyResult {
   type: "empty";
@@ -49,6 +60,7 @@ export type RouterResult =
   | ActionResult
   | BuiltinResult
   | UnknownResult
+  | NonCommandResult
   | EmptyResult;
 
 // ---------------------------------------------------------------------------
@@ -67,6 +79,16 @@ export type RouterResult =
 export function routeCommand(parsed: ParsedInput): RouterResult {
   if (parsed.isEmpty) {
     return { type: "empty" };
+  }
+
+  // Non-slash input is NOT a command — return a friendly result for the shell to handle.
+  if (!parsed.isSlashCommand) {
+    const cmdDef = lookupCommand(parsed.command);
+    return {
+      type: "non_command",
+      raw: parsed.raw,
+      matchesCommand: cmdDef ? cmdDef.names[0] : null,
+    };
   }
 
   // `project <name>` is a sub-command of `projects`

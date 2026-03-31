@@ -166,16 +166,27 @@ export function terminalReducer(
 
       let newRoute = state.route;
 
-      if (routeResult.type === "unknown") {
-        const didYouMean =
-          routeResult.suggestions.length > 0
-            ? `Did you mean: ${routeResult.suggestions.join(", ")}?`
-            : "Type `help` for available commands.";
+      if (routeResult.type === "non_command") {
+        // Non-slash input: not a command invocation.
+        const suggestion = routeResult.matchesCommand
+          ? `Did you mean \`/${routeResult.matchesCommand}\`?`
+          : "Chat mode is coming soon. Type `/help` for available commands.";
         newTranscript.push({
           id: uid(),
           ts: Date.now(),
           kind: "system",
-          text: `command not found: ${routeResult.raw}\n${didYouMean}`,
+          text: suggestion,
+        });
+      } else if (routeResult.type === "unknown") {
+        const didYouMean =
+          routeResult.suggestions.length > 0
+            ? `Did you mean: ${routeResult.suggestions.map((s) => `/${s}`).join(", ")}?`
+            : "Type `/help` for available commands.";
+        newTranscript.push({
+          id: uid(),
+          ts: Date.now(),
+          kind: "system",
+          text: `command not found: /${routeResult.raw}\n${didYouMean}`,
         });
       } else if (routeResult.type === "builtin" && routeResult.id === "help") {
         newTranscript.push(makeHelpEntry());
@@ -371,7 +382,7 @@ function makeWelcomeEntry(): TranscriptEntry {
     id: uid(),
     ts: Date.now(),
     kind: "system",
-    text: "Welcome to Tony Jiang's terminal. Type `help` to see available commands.",
+    text: "Welcome to Tony Jiang's terminal. Type `/help` to see available commands.",
   };
 }
 
@@ -380,18 +391,18 @@ function makeHelpEntry(): TranscriptEntry {
   const lines = [
     "Available commands:",
     ...cmds.map((c) => {
-      const aliases = c.names.slice(1);
+      const aliases = c.names.slice(1).map((a) => `/${a}`);
       const aliasStr = aliases.length > 0 ? `  (aliases: ${aliases.join(", ")})` : "";
-      return `  ${c.names[0].padEnd(12)} — ${c.summary}${aliasStr}`;
+      return `  ${`/${c.names[0]}`.padEnd(13)} — ${c.summary}${aliasStr}`;
     }),
     "",
     "Usage examples:",
-    "  about        — view PM section",
-    "  ai           — view AI Product Builder section",
-    "  projects     — list all projects",
-    "  project foo  — drill into a specific project",
-    "  resume       — open resume PDF",
-    "  clear        — clear transcript",
+    "  /about        — view PM section",
+    "  /ai           — view AI Product Builder section",
+    "  /projects     — list all projects",
+    "  /project foo  — drill into a specific project",
+    "  /resume       — open resume PDF",
+    "  /clear        — clear transcript",
   ];
 
   return {

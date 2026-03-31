@@ -17,6 +17,9 @@ const MIN_FUZZY_INPUT_LENGTH = 2;
 /**
  * Generate ordered suggestions for the current input value.
  *
+ * Only slash-prefixed input produces suggestions (e.g. "/ab" → ["/about"]).
+ * Non-slash input returns an empty array — it is not a command invocation.
+ *
  * Scoring:
  *   - Exact prefix match on command names: score 100 - length (shorter = better)
  *   - Exact match in history with prefix: score 80 - length
@@ -27,34 +30,45 @@ const MIN_FUZZY_INPUT_LENGTH = 2;
  * @returns            Ordered suggestion list (highest score first), max 5.
  */
 export function getSuggestions(input: string, history: string[]): Suggestion[] {
-  const trimmed = input.trim().toLowerCase();
+  const trimmed = input.trim();
 
   if (!trimmed) return [];
 
+  // Only provide suggestions for slash-prefixed input.
+  if (!trimmed.startsWith("/")) return [];
+
+  // Strip the leading '/' for prefix matching, then re-prepend it to suggestion values.
+  const withoutSlash = trimmed.slice(1).toLowerCase();
+
   // First token only (we suggest commands, not full args)
-  const prefix = trimmed.split(/\s+/)[0];
+  const prefix = withoutSlash.split(/\s+/)[0];
 
   const suggestions = new Map<string, Suggestion>();
 
   // --- Command prefix matches ---
   for (const name of allCommandNames()) {
     if (name.startsWith(prefix)) {
-      const existing = suggestions.get(name);
+      const key = `/${name}`;
+      const existing = suggestions.get(key);
       const score = 100 - name.length; // shorter completions rank higher
       if (!existing || existing.score < score) {
-        suggestions.set(name, { value: name, kind: "command", score });
+        suggestions.set(key, { value: key, kind: "command", score });
       }
     }
   }
 
   // --- History prefix matches (if input long enough to be meaningful) ---
+  // Compare history entries that are also slash-prefixed.
   if (prefix.length >= MIN_FUZZY_INPUT_LENGTH) {
     for (const entry of history) {
-      const entryLower = entry.toLowerCase().trim();
-      const entryCommand = entryLower.split(/\s+/)[0];
-      if (entryCommand.startsWith(prefix) && !suggestions.has(entryCommand)) {
-        suggestions.set(entryCommand, {
-          value: entryCommand,
+      const entryTrimmed = entry.toLowerCase().trim();
+      if (!entryTrimmed.startsWith("/")) continue;
+      const entryWithout = entryTrimmed.slice(1);
+      const entryCommand = entryWithout.split(/\s+/)[0];
+      const entryKey = `/${entryCommand}`;
+      if (entryCommand.startsWith(prefix) && !suggestions.has(entryKey)) {
+        suggestions.set(entryKey, {
+          value: entryKey,
           kind: "history",
           score: 80 - entryCommand.length,
         });

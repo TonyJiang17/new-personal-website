@@ -26,6 +26,14 @@ describe("COMMAND_REGISTRY", () => {
     }
   });
 
+  it("every command usage starts with /", () => {
+    for (const cmd of COMMAND_REGISTRY) {
+      if (cmd.usage) {
+        expect(cmd.usage.startsWith("/"), `usage for "${cmd.id}" should start with /`).toBe(true);
+      }
+    }
+  });
+
   it("no alias collisions across all commands (test-time sanity check)", () => {
     const seen = new Map<string, string>();
     for (const cmd of COMMAND_REGISTRY) {

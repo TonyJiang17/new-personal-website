@@ -40,71 +40,91 @@ describe("getSuggestions", () => {
     expect(getSuggestions("   ", [])).toEqual([]);
   });
 
-  it("prefix-matches command names", () => {
-    const results = getSuggestions("pro", []);
+  it("returns empty array for non-slash input (not a command)", () => {
+    expect(getSuggestions("pro", [])).toEqual([]);
+    expect(getSuggestions("about", [])).toEqual([]);
+    expect(getSuggestions("hello world", [])).toEqual([]);
+  });
+
+  it("prefix-matches command names for slash input", () => {
+    const results = getSuggestions("/pro", []);
     const values = results.map((r) => r.value);
-    expect(values).toContain("projects");
+    expect(values).toContain("/projects");
+  });
+
+  it("suggestion values include the leading /", () => {
+    const results = getSuggestions("/he", []);
+    for (const r of results) {
+      expect(r.value.startsWith("/")).toBe(true);
+    }
   });
 
   it("marks command suggestions as kind='command'", () => {
-    const results = getSuggestions("pro", []);
+    const results = getSuggestions("/pro", []);
     for (const r of results) {
-      if (r.value === "projects" || r.value === "portfolio") {
+      if (r.value === "/projects" || r.value === "/portfolio") {
         expect(r.kind).toBe("command");
       }
     }
   });
 
   it("shorter completions rank higher than longer ones (deterministic order)", () => {
-    // "ai" (2 chars) should rank above "about" (5 chars) when prefix "a" matches both
-    const results = getSuggestions("a", []);
-    const aiIdx = results.findIndex((r) => r.value === "ai");
-    const aboutIdx = results.findIndex((r) => r.value === "about");
+    // "/ai" (2 chars) should rank above "/about" (5 chars) when prefix "/a" matches both
+    const results = getSuggestions("/a", []);
+    const aiIdx = results.findIndex((r) => r.value === "/ai");
+    const aboutIdx = results.findIndex((r) => r.value === "/about");
     if (aiIdx !== -1 && aboutIdx !== -1) {
       expect(aiIdx).toBeLessThan(aboutIdx);
     }
   });
 
   it("respects MAX_SUGGESTIONS cap of 5", () => {
-    // Single character "c" matches many names
-    const results = getSuggestions("c", []);
+    // Single character "/c" matches many names
+    const results = getSuggestions("/c", []);
     expect(results.length).toBeLessThanOrEqual(5);
   });
 
-  it("does not add history suggestions if input length < 2", () => {
-    const history = ["about", "contact"];
-    const results = getSuggestions("a", history);
-    // All results should be 'command' kind for 1-char input
+  it("does not add history suggestions if command prefix length < 2", () => {
+    const history = ["/about", "/contact"];
+    const results = getSuggestions("/a", history);
+    // All results should be 'command' kind for 1-char prefix
     for (const r of results) {
       expect(r.kind).toBe("command");
     }
   });
 
-  it("adds history suggestions for input length >= 2", () => {
-    // 'xyz' won't match any command — but if history has it, it might not appear
-    // Use 'ab' which matches 'about' as command; add a history entry 'abcustom' not in registry
-    const history = ["abcustom"];
-    const results = getSuggestions("ab", history);
+  it("adds history suggestions for slash input with prefix length >= 2", () => {
+    // '/abcustom' won't match any command — but if history has it, it should appear
+    const history = ["/abcustom"];
+    const results = getSuggestions("/ab", history);
     const historyResult = results.find((r) => r.kind === "history");
-    // 'abcustom' starts with 'ab', not in command registry → should be in results as history
     expect(historyResult).toBeDefined();
   });
 
+  it("ignores non-slash history entries", () => {
+    // History entry without slash should not contribute suggestions
+    const history = ["abcustom"];
+    const results = getSuggestions("/ab", history);
+    // 'abcustom' (no slash) should not appear as a suggestion
+    const historyResult = results.find((r) => r.value === "/abcustom" && r.kind === "history");
+    expect(historyResult).toBeUndefined();
+  });
+
   it("command suggestions always outscore history for same prefix", () => {
-    // 'about' is a command (score ~95); a history entry 'aboutxyz' would score lower
-    const history = ["aboutxyz"];
-    const results = getSuggestions("ab", history);
-    const cmdResult = results.find((r) => r.kind === "command" && r.value === "about");
+    // '/about' is a command (score ~95); a history entry '/aboutxyz' would score lower
+    const history = ["/aboutxyz"];
+    const results = getSuggestions("/ab", history);
+    const cmdResult = results.find((r) => r.kind === "command" && r.value === "/about");
     const histResult = results.find((r) => r.kind === "history");
     if (cmdResult && histResult) {
       expect(cmdResult.score).toBeGreaterThan(histResult.score);
     }
   });
 
-  it("is case-insensitive (uppercased input matches commands)", () => {
-    const results = getSuggestions("PRO", []);
+  it("is case-insensitive (uppercased slash input matches commands)", () => {
+    const results = getSuggestions("/PRO", []);
     const values = results.map((r) => r.value);
-    expect(values).toContain("projects");
+    expect(values).toContain("/projects");
   });
 });
 
@@ -132,12 +152,10 @@ describe("getUnknownCommandSuggestions", () => {
   });
 
   it("prefers canonical names over aliases in output", () => {
-    // 'abut' is close to 'about' (canonical) and perhaps 'pm' (alias) is not close
+    // 'abut' is close to 'about' (canonical)
     const results = getUnknownCommandSuggestions("abut");
-    // 'about' is canonical, should appear before any alias if both match
     const aboutIdx = results.indexOf("about");
     if (aboutIdx !== -1) {
-      // just assert it's present
       expect(aboutIdx).toBeGreaterThanOrEqual(0);
     }
   });

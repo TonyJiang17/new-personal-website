@@ -129,7 +129,7 @@ export default function TerminalShell() {
         id: `init-unknown-${Date.now()}`,
         ts: Date.now(),
         kind: "system",
-        text: "Unknown route in URL — redirected to home. Type `help` for available commands.",
+        text: "Unknown route in URL — redirected to home. Type `/help` for available commands.",
       });
     }
     // Append initial section entry so the hero/section content renders immediately.
