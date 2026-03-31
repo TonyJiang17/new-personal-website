@@ -34,10 +34,10 @@ export interface HeroContent {
 export const HERO_CONTENT: HeroContent = {
   id: "hero",
   name: "Tony Jiang",
-  tagline: "Product Manager · AI Product Builder",
+  tagline: "Product Manager · AI Researcher & Engineer",
   intro: [
-    "Building products at the intersection of AI and human experience.",
-    "[Placeholder — full bio coming in follow-up epic]",
+    "MIT LGO Fellow (MS EECS + MBA). Applied AI Scientist at AWS GenAI Innovation Center.",
+    "PM background at TikTok and Salesforce. Working at the intersection of AI research, product, and engineering.",
   ],
   // ASCII art generated from context/assets/hero_source.jpg via scripts/generate_hero_ascii.py
   asciiArt: `
@@ -99,9 +99,8 @@ export const HERO_CONTENT: HeroContent = {
 ····                                       ········· ·· · ··· ·· · ·· ···    · ···                        ··
                                         ·    · ········· ·· ··········· · ·    ····
                                           ·  ················· ···· ·· · ·   ·· ··
-                                           ·   · ·········· ····· ····· ·    ·   ··
-[portrait generated from hero_source.jpg]`,
-  status: "placeholder",
+                                           ·   · ·········· ····· ····· ·    ·   ··`,
+  status: "final",
 };
 
 // ---------------------------------------------------------------------------
@@ -112,32 +111,29 @@ export const PM_CONTENT: SectionContent = {
   id: "about",
   title: "Product Manager",
   summary:
-    "[Placeholder] PM with experience shipping 0→1 products and leading cross-functional teams.",
+    "PM with experience shipping 0→1 products and leading cross-functional teams at TikTok and Salesforce.",
   details: [
-    "· Led product strategy for [Placeholder Product].",
-    "· Shipped features reaching [N]+ users.",
-    "· Cross-functional leadership across engineering, design, and data.",
-    "",
-    "[Full PM content coming in follow-up epic — R15]",
+    "· TikTok (2022–2023): Senior PM, Ads Monetization. Revamped Ad Creation Flow; shipped Saved Audience and AI Auto-Targeting. Improved CSAT ~30% across Enterprise and SMB.",
+    "· Salesforce (2020–2022): PM rotational program. Built Slack App Builder (0→1, ~300 customers in first month). Led Workforce Engagement ML forecasting product from 0→1.",
+    "· TopicSpace (2020–2021): Co-founded social learning app. Led 0→1 product development (~800 total users).",
   ],
   nextHints: ["ai", "projects", "contact"],
-  status: "placeholder",
+  status: "final",
 };
 
 export const AI_CONTENT: SectionContent = {
   id: "ai",
-  title: "AI Product Builder",
+  title: "AI Research & Engineering",
   summary:
-    "[Placeholder] Builder at the frontier of applied AI — LLM-powered products and automation tools.",
+    "Applied AI Scientist at AWS GenAI Innovation Center. Building multi-agent systems, LLM applications, and computer vision pipelines.",
   details: [
-    "· Built [Placeholder AI Product] using [LLM / tools].",
-    "· Shipped production AI features with measurable user impact.",
-    "· Comfortable at the boundary of PM and engineering for AI systems.",
-    "",
-    "[Full AI content coming in follow-up epic — R15]",
+    "· AWS GenAI Innovation Center (2024–present): Multi-agent AI system for Coinbase (smart contract vulnerability detection); IDP with RAG deployed to 20+ enterprise customers.",
+    "· AWS GenAI Innovation Center: Multimodal Vision LLM (LLaVA-Next) research for soccer video understanding. Paper published at CVPR CVSports 2025.",
+    "· Walmart Labs (2019–2020): Full-stack computer vision pipeline using MaskRCNN for vehicle detection.",
+    "· MIT MS EECS: Coursework in Deep Generative Models, Deep Learning, and Robotics Manipulation.",
   ],
   nextHints: ["projects", "about", "contact"],
-  status: "placeholder",
+  status: "final",
 };
 
 export const PROJECTS_CONTENT: SectionContent = {

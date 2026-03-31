@@ -91,7 +91,7 @@ test.describe("section navigation via slash commands", () => {
   test("`/ai` command renders AI section heading", async ({ page }) => {
     await page.goto("/");
     await typeCommand(page, "/ai");
-    await expect(page.getByRole("heading", { name: /AI Product Builder/i }).first()).toBeVisible();
+    await expect(page.getByRole("heading", { name: /AI Research/i }).first()).toBeVisible();
   });
 
   test("`/projects` command renders projects section heading", async ({ page }) => {
