@@ -36,5 +36,5 @@
 
 ## Stage 6 status
 - staging_deployed: pass
-- smoke_checks_pass: pending (Tony)
+- smoke_checks_pass: pass (Tony confirmed)
 - handoff_complete: pass (PR merged)

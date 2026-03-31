@@ -17,4 +17,4 @@ Rules:
 | Epic ID | Epic folder | Trigger | Status | PRD | Work Orders | Design Preview | Notes |
 |---|---|---|---|---|---|---|---|
 | epic_01_mvp_site_rebuild | plans/mvp_site_rebuild | intake | done | plans/mvp_site_rebuild/02_requirements.md | plans/mvp_site_rebuild/04_work_orders.md | (n/a) | Stage 6 passed (staging + smoke): https://personalwebsiterebuild01-19x61ndle.vercel.app |
-| epic_02_ui_polish_round_1 | plans/epic_02_ui_polish_round_1 | feedback | in_review | plans/epic_02_ui_polish_round_1/02_requirements.md | plans/epic_02_ui_polish_round_1/04_work_orders.md | optional | Staging deployed: https://personalwebsiterebuild01-i22zcnc4y.vercel.app (awaiting smoke) |
+| epic_02_ui_polish_round_1 | plans/epic_02_ui_polish_round_1 | feedback | done | plans/epic_02_ui_polish_round_1/02_requirements.md | plans/epic_02_ui_polish_round_1/04_work_orders.md | optional | Stage 6 passed (staging + smoke): https://personalwebsiterebuild01-i22zcnc4y.vercel.app |
