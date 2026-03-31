@@ -62,7 +62,8 @@ Default recommendation for v1:
   - unit tests for routing: slash vs chat
   - mocked API tests for chat endpoint
 
-## Open questions (Tony)
-1) Should chat use `public/resume.pdf` as a source, or only `content/sections.ts`?
-2) Do you want streaming responses (typing effect) or standard responses?
-3) Do you want a visible “Chat is powered by Claude” footer/attribution?
+## Decisions (Tony)
+- Sources: All public site info, including resume content; for v1 we will inject the full site context (primarily from content/sections.ts; resume is already reflected there).
+- Responses: Non-streaming (standard).
+- Attribution: None.
+- Retrieval: No RAG; use static context injection from the site content into the model context window.
