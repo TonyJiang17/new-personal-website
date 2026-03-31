@@ -43,12 +43,13 @@ describe("clear command — WI-3.1", () => {
     expect(after.transcript[1].route).toBe("home");
   });
 
-  it("re-renders the current route section (not always home)", () => {
+  it("resets view to home even if current route is not home", () => {
     const initial = makeInitialState();
     const withInput = { ...initial, input: "/clear", route: "about" as const };
     const { state: after } = terminalReducer(withInput, { type: "SUBMIT_INPUT" });
 
-    expect(after.transcript[1].route).toBe("about");
+    expect(after.route).toBe("home");
+    expect(after.transcript[1].route).toBe("home");
   });
 
   it("also works via /cls alias", () => {
@@ -91,10 +92,11 @@ describe("CLEAR_TRANSCRIPT event — WI-3.1", () => {
     expect(after.transcript[1].kind).toBe("section");
   });
 
-  it("preserves the current route", () => {
+  it("resets route to home", () => {
     const initial = { ...makeInitialState(), route: "projects" as const };
     const { state: after } = terminalReducer(initial, { type: "CLEAR_TRANSCRIPT" });
 
-    expect(after.transcript[1].route).toBe("projects");
+    expect(after.route).toBe("home");
+    expect(after.transcript[1].route).toBe("home");
   });
 });
