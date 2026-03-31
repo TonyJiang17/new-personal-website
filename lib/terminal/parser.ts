@@ -12,13 +12,19 @@ export interface ParsedInput {
   isEmpty: boolean;
   /** The original raw input string before any normalization. */
   raw: string;
+  /**
+   * True when the input started with '/'.
+   * Only slash-prefixed input is treated as a command invocation.
+   * Non-slash input is NOT a command (chat / plain text).
+   */
+  isSlashCommand: boolean;
 }
 
 /**
  * Parse and normalize raw terminal input.
  *
  * Grammar (simplified EBNF):
- *   input   := ws? command (ws+ token)* ws?
+ *   input   := ws? '/'? command (ws+ token)* ws?
  *   command := word
  *   token   := quoted | flag | word
  *   flag    := '--' word | '-' [a-zA-Z]+
@@ -27,6 +33,8 @@ export interface ParsedInput {
  *   ws      := [ \t]+
  *
  * Normalization rules:
+ *   - Leading '/' marks the input as a slash command (isSlashCommand: true) and is stripped before parsing.
+ *   - Input without a leading '/' is parsed for content but isSlashCommand is false (not a command).
  *   - Command and flags are lowercased.
  *   - Leading/trailing whitespace trimmed.
  *   - Multiple internal whitespace runs collapsed.
@@ -37,13 +45,18 @@ export function parseInput(raw: string): ParsedInput {
   const trimmed = raw.trim();
 
   if (!trimmed) {
-    return { command: "", args: [], flags: {}, isEmpty: true, raw };
+    return { command: "", args: [], flags: {}, isEmpty: true, isSlashCommand: false, raw };
   }
 
-  const tokens = tokenize(trimmed);
+  const isSlashCommand = trimmed.startsWith("/");
+  // Strip the leading '/' so the rest parses as a normal command token stream.
+  const toParse = isSlashCommand ? trimmed.slice(1) : trimmed;
+
+  const tokens = tokenize(toParse);
 
   if (tokens.length === 0) {
-    return { command: "", args: [], flags: {}, isEmpty: true, raw };
+    // Input was just "/" — treat as empty
+    return { command: "", args: [], flags: {}, isEmpty: true, isSlashCommand, raw };
   }
 
   const command = tokens[0].toLowerCase();
@@ -65,7 +78,7 @@ export function parseInput(raw: string): ParsedInput {
     }
   }
 
-  return { command, args, flags, isEmpty: false, raw };
+  return { command, args, flags, isEmpty: false, isSlashCommand, raw };
 }
 
 /**
