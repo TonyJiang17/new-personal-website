@@ -43,7 +43,7 @@ function parseRouteFromSearch(search: string): { route: RouteId; wasUnknown: boo
 const READABLE_SECTIONS: { route: RouteId; label: string }[] = [
   { route: "home", label: "Overview" },
   { route: "about", label: "Product Manager" },
-  { route: "ai", label: "AI Product Builder" },
+  { route: "ai", label: "AI Research & Engineering" },
   { route: "projects", label: "Projects" },
   { route: "contact", label: "Contact" },
 ];
@@ -51,14 +51,6 @@ const READABLE_SECTIONS: { route: RouteId; label: string }[] = [
 function ReadableCompanion({ activeRoute }: { activeRoute: RouteId }) {
   return (
     <aside aria-label="Readable companion — scan mode" className="flex flex-col h-full">
-      {/* Header */}
-      <div className="px-5 py-4 border-b border-terminal-border flex-shrink-0">
-        <div className="text-terminal-muted text-xs uppercase tracking-widest mb-1">Scan Mode</div>
-        <p className="text-terminal-muted text-xs leading-relaxed">
-          Browse without typing commands.
-        </p>
-      </div>
-
       {/* All sections stacked — always visible for recruiters */}
       <div className="flex-1 overflow-y-auto px-5 py-4 space-y-6">
         {READABLE_SECTIONS.map(({ route, label }) => {
@@ -102,7 +94,7 @@ function ReadableCompanion({ activeRoute }: { activeRoute: RouteId }) {
             href={link.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-terminal-muted underline hover:text-terminal-text"
+            className="text-xs text-terminal-accent underline hover:text-white"
           >
             {link.label}
           </a>

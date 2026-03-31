@@ -54,7 +54,7 @@ export const COMMAND_REGISTRY: CommandDef[] = [
   {
     id: "ai",
     names: ["ai", "builder"],
-    summary: "View the AI Product Builder section",
+    summary: "View the AI Research & Engineering section",
     usage: "/ai",
     route: "ai",
   },
