@@ -6,7 +6,7 @@
 - Production deploy: out-of-band; explicitly requested by Tony
 
 ## Staging deployment
-- Preview URL: https://personalwebsiterebuild01-ami842irj.vercel.app
+- Preview URL: https://personalwebsiterebuild01-6ocxhszp9.vercel.app
 - Deployment method: Vercel (preview)
 - Git ref: main
 - Date: 2026-03-31
@@ -42,5 +42,5 @@
 
 ## Stage 6 status
 - staging_deployed: pass
-- smoke_checks_pass: pending (Tony)
-- handoff_complete: pending
+- smoke_checks_pass: pass (Tony confirmed)
+- handoff_complete: pass
