@@ -1,39 +1,46 @@
-# Epic 03 — LLM Chat: Handoff + QA
+# 05_handoff_qa.md — Epic 3 (LLM-backed Chat)
 
-## Preview URL
-- https://personalwebsiterebuild01-27q82qncq.vercel.app
+## Release summary
+- Epic: `plans/epic_03_llm_chat`
+- Default deploy target: **Vercel preview/staging**
+- Production deploy: out-of-band; explicitly requested by Tony
 
-## What shipped
-- Non-slash input now triggers a `CHAT_REQUEST` terminal effect and calls `POST /api/chat`.
-- Assistant reply is appended into the transcript.
-- If the API returns `suggestedCommands`, the terminal prints a `Suggested: /...` line.
-- Server route hardened system prompt framing against prompt injection.
-- v1 ships **without rate limiting** (TODOs + constants added for follow-up).
+## Staging deployment
+- Preview URL: https://personalwebsiterebuild01-h1wp0dygo.vercel.app
+- Deployment method: Vercel (preview)
+- Git ref: main
+- Date: 2026-03-31
 
-## Env vars (Vercel)
-- `OPENAI_API_KEY` (required for real replies)
-- `CHAT_MODEL` (optional; defaults to `gpt-5.2`)
-- `CHAT_ENABLED` (optional; default `1`; set `0` to disable)
+## Env vars (staging)
+- Required:
+  - `OPENAI_API_KEY` ✅ (configured locally; ensure set in Vercel preview env if needed)
+- Optional:
+  - `CHAT_MODEL` (default: gpt-5.2)
+  - `CHAT_ENABLED` (default: 1)
 
-## Smoke checklist (manual)
-1. Load `/`:
-   - Welcome message visible
-   - Input focused
-2. Slash commands still work:
-   - `/help` shows command list
-   - `/about`, `/ai`, `/projects`, `/contact` render expected headings
-3. Non-slash chat path:
-   - Type `hello` (no leading slash)
-   - Terminal prints `Assistant is thinking…`
-   - Then prints an assistant response (if `OPENAI_API_KEY` set) OR friendly fallback with `/help`.
-4. Suggested commands rendering (only if provider returns them):
-   - Ask something like: `how do I contact Tony?`
-   - Expect a `Suggested: /contact, /resume` style line.
-5. Unknown slash commands:
-   - `/foobarqux` shows `command not found` and a `/help` hint.
+## Post-deploy smoke checklist (staging)
+- [ ] Site loads
+- [ ] `/help` works
+- [ ] Slash commands still work: `/about`, `/ai`, `/projects`, `/contact`, `/home`, `/resume`, `/clear`
+- [ ] Chat (non-slash input) works:
+  - [ ] Ask: “What do you do?” → coherent answer + suggests `/about` or `/resume`
+  - [ ] Ask: “How to contact you?” → suggests `/contact` + includes email
+  - [ ] Ask: “Show projects” → suggests `/projects`
+- [ ] Failure mode:
+  - [ ] If chat provider errors, user sees friendly message and suggestion to use `/help`
 
-## Automated checks run locally
-- `npm run typecheck`
-- `npm run test`
-- `npm run test:e2e`
-- `npm run build`
+## Validation evidence
+- Local validation:
+  - `npm run typecheck` ✅
+  - `npm test` ✅
+  - `npm run test:e2e` ✅
+  - `npm run build` ✅
+
+## Known limitations
+- No full RAG; static context injection only.
+- No rate limiting (v1); add in future epic if needed.
+
+## Stage 6 status
+- staging_deployed: pass
+- smoke_checks_pass: pending (Tony)
+- handoff_complete: pending
