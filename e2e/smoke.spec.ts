@@ -65,7 +65,7 @@ test.describe("slash command routing — non-slash input", () => {
     // We optimistically print a thinking line, then append the server reply.
     await expect(page.getByText(/Assistant is thinking/i)).toBeVisible();
     await expect(page.getByText(/Chat is temporarily unavailable/i)).toBeVisible();
-    await expect(page.getByText(/\/help/i)).toBeVisible();
+    await expect(page.getByText(/Chat is temporarily unavailable.*\/help/i)).toBeVisible();
   });
 });
 

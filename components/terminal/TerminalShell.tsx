@@ -210,7 +210,7 @@ export default function TerminalShell() {
           break;
       }
     }
-  }, [runChatRequest]);
+  });
 
   // Dispatch: apply reducer, capture effects, update state.
   const dispatch = useCallback((event: TerminalEvent) => {
