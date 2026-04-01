@@ -57,6 +57,8 @@ No RAG, no vector DB.
 1) Should we ship v1 without rate limiting, or add a minimal per-IP limiter now?
 2) Which exact OpenAI model string do we want as default?
 
+Decision: use `gpt-5.2` (from Tony).
+
 ## Deployment & Secrets
 - Framework/runtime: Next.js (Route Handler)
 - Secrets file (local): `.env.local`
