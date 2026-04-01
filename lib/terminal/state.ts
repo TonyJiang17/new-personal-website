@@ -77,7 +77,8 @@ export type TerminalEvent =
 export type SideEffect =
   | { type: "NAVIGATE"; route: RouteId }
   | { type: "OPEN_RESUME" }
-  | { type: "PERSIST_HISTORY"; history: string[] };
+  | { type: "PERSIST_HISTORY"; history: string[] }
+  | { type: "CHAT_REQUEST"; message: string };
 
 // ---------------------------------------------------------------------------
 // Initial state
@@ -168,15 +169,23 @@ export function terminalReducer(
 
       if (routeResult.type === "non_command") {
         // Non-slash input: not a command invocation.
-        const suggestion = routeResult.matchesCommand
-          ? `Did you mean \`/${routeResult.matchesCommand}\`?`
-          : "Chat mode is coming soon. Type `/help` for available commands.";
-        newTranscript.push({
-          id: uid(),
-          ts: Date.now(),
-          kind: "system",
-          text: suggestion,
-        });
+        if (routeResult.matchesCommand) {
+          newTranscript.push({
+            id: uid(),
+            ts: Date.now(),
+            kind: "system",
+            text: `Did you mean \`/${routeResult.matchesCommand}\`?`,
+          });
+        } else {
+          // WI-2.1: Treat free-form input as a chat request.
+          newTranscript.push({
+            id: uid(),
+            ts: Date.now(),
+            kind: "system",
+            text: "Assistant is thinking…",
+          });
+          effects.push({ type: "CHAT_REQUEST", message: raw });
+        }
       } else if (routeResult.type === "unknown") {
         const didYouMean =
           routeResult.suggestions.length > 0

@@ -59,10 +59,13 @@ test.describe("slash command routing — non-slash input", () => {
     await expect(page.getByText(/Did you mean `\/about`/)).toBeVisible();
   });
 
-  test("typing unknown non-slash input shows 'chat mode is coming soon'", async ({ page }) => {
+  test("typing unknown non-slash input triggers one chat exchange", async ({ page }) => {
     await page.goto("/");
     await typeCommand(page, "foobarqux");
-    await expect(page.getByText(/Chat mode is coming soon/i)).toBeVisible();
+    // We optimistically print a thinking line, then append the server reply.
+    await expect(page.getByText(/Assistant is thinking/i)).toBeVisible();
+    await expect(page.getByText(/Chat is temporarily unavailable/i)).toBeVisible();
+    await expect(page.getByText(/\/help/i)).toBeVisible();
   });
 });
 

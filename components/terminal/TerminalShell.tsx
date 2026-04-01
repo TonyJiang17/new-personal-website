@@ -137,6 +137,56 @@ export default function TerminalShell() {
   // Effects produced by the latest action — processed in the effect below.
   const pendingEffects = useRef<SideEffect[]>([]);
 
+  const runChatRequest = useCallback(async (message: string) => {
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ message }),
+      });
+
+      const data = (await res.json()) as { reply?: unknown; suggestedCommands?: unknown };
+      const reply = typeof data?.reply === "string" ? data.reply : "Chat is temporarily unavailable. Try /help.";
+      const suggestedCommands = Array.isArray(data?.suggestedCommands)
+        ? (data.suggestedCommands.filter((c) => typeof c === "string") as string[])
+        : [];
+
+      setState((prev) => {
+        const transcript: TranscriptEntry[] = [...prev.transcript];
+        transcript.push({
+          id: `chat-reply-${Date.now()}`,
+          ts: Date.now(),
+          kind: "system",
+          text: reply,
+        });
+
+        if (suggestedCommands.length > 0) {
+          transcript.push({
+            id: `chat-suggest-${Date.now()}`,
+            ts: Date.now(),
+            kind: "system",
+            text: `Suggested: ${suggestedCommands.map((c) => (c.startsWith("/") ? c : `/${c}`)).join(", ")}`,
+          });
+        }
+
+        return { ...prev, transcript };
+      });
+    } catch {
+      setState((prev) => ({
+        ...prev,
+        transcript: [
+          ...prev.transcript,
+          {
+            id: `chat-error-${Date.now()}`,
+            ts: Date.now(),
+            kind: "system",
+            text: "Chat is temporarily unavailable right now. Type `/help` for available commands.",
+          },
+        ],
+      }));
+    }
+  }, []);
+
   // Process side-effects after each render.
   useEffect(() => {
     if (pendingEffects.current.length === 0) return;
@@ -155,9 +205,12 @@ export default function TerminalShell() {
           // WI-5.2: popstate listener (below) handles back/forward → ROUTE_CHANGED.
           window.history.pushState({ route: effect.route }, "", routeToUrl(effect.route));
           break;
+        case "CHAT_REQUEST":
+          void runChatRequest(effect.message);
+          break;
       }
     }
-  });
+  }, [runChatRequest]);
 
   // Dispatch: apply reducer, capture effects, update state.
   const dispatch = useCallback((event: TerminalEvent) => {
