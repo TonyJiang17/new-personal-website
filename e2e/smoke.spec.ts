@@ -61,11 +61,24 @@ test.describe("slash command routing — non-slash input", () => {
 
   test("typing unknown non-slash input triggers one chat exchange", async ({ page }) => {
     await page.goto("/");
+
+    const amberLines = page.locator("div.text-terminal-amber");
+    const before = await amberLines.count();
+
     await typeCommand(page, "foobarqux");
+
     // We optimistically print a thinking line, then append the server reply.
     await expect(page.getByText(/Assistant is thinking/i)).toBeVisible();
-    await expect(page.getByText(/Chat is temporarily unavailable/i)).toBeVisible();
-    await expect(page.getByText(/Chat is temporarily unavailable.*\/help/i)).toBeVisible();
+
+    // The assistant reply can be a real model response (if OPENAI_API_KEY is present)
+    // or a friendly fallback (if the provider/key is unavailable). Assert that *some*
+    // additional system output appeared.
+    await expect
+      .poll(async () => {
+        const after = await amberLines.count();
+        return after;
+      })
+      .toBeGreaterThanOrEqual(before + 2);
   });
 });
 

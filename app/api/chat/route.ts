@@ -92,7 +92,7 @@ export async function POST(req: Request): Promise<Response> {
 
   // 4. Build context + call provider
   const context = buildContext();
-  const model = process.env.CHAT_MODEL ?? "gpt-5.2";
+  const model = process.env.CHAT_MODEL && process.env.CHAT_MODEL.trim() ? process.env.CHAT_MODEL.trim() : "gpt-5.2";
   const client = new OpenAI({ apiKey });
 
   try {
