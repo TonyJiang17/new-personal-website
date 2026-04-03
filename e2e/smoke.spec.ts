@@ -229,6 +229,35 @@ test.describe("clear command — WI-3.1 clear preserves hero", () => {
   });
 });
 
+test.describe("collapsible panel — WI-1.3/1.4", () => {
+  test("toggle collapses and expands the right panel", async ({ page }) => {
+    await page.goto("/");
+    const companion = page.locator('[aria-label="Readable companion — scan mode"]');
+    await expect(companion).toBeVisible();
+
+    // Collapse
+    await page.getByRole("button", { name: /collapse panel/i }).click();
+    await expect(companion).not.toBeVisible();
+
+    // Expand
+    await page.getByRole("button", { name: /expand panel/i }).click();
+    await expect(companion).toBeVisible();
+  });
+
+  test("collapsed state persists across page reload", async ({ page }) => {
+    await page.goto("/");
+
+    // Collapse the panel
+    await page.getByRole("button", { name: /collapse panel/i }).click();
+    const companion = page.locator('[aria-label="Readable companion — scan mode"]');
+    await expect(companion).not.toBeVisible();
+
+    // Reload and verify still collapsed
+    await page.reload();
+    await expect(companion).not.toBeVisible();
+  });
+});
+
 test.describe("project drill-down", () => {
   test("`/project <unknown>` shows friendly error", async ({ page }) => {
     await page.goto("/");

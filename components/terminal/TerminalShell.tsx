@@ -247,6 +247,21 @@ export default function TerminalShell() {
   // Mobile: toggle scan panel.
   const [showScanPanel, setShowScanPanel] = useState(false);
 
+  // Desktop: collapsible right panel — WI-1.1/1.2/1.3.
+  const [panelCollapsed, setPanelCollapsed] = useState(() => {
+    try {
+      return localStorage.getItem("panel-collapsed") === "true";
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("panel-collapsed", String(panelCollapsed));
+    } catch {}
+  }, [panelCollapsed]);
+
   return (
     <div className="flex h-screen w-screen bg-terminal-bg text-terminal-text font-mono overflow-hidden">
       {/* ── Left: Terminal ──────────────────────────────────── */}
@@ -302,13 +317,18 @@ export default function TerminalShell() {
       </div>
 
       {/* ── Right: Readable companion ───────────────────────── */}
+      {/* Mobile: full-screen panel via showScanPanel. Desktop: rail (w-12) or full (w-80/96). */}
       <div
-        className={`
-          w-80 xl:w-96 flex-shrink-0 bg-terminal-surface flex flex-col
-          ${showScanPanel ? "flex w-full md:w-80 xl:w-96" : "hidden md:flex"}
-        `}
+        className={[
+          "flex-shrink-0 bg-terminal-surface",
+          showScanPanel
+            ? "flex flex-col w-full md:w-80 xl:w-96"
+            : panelCollapsed
+              ? "hidden md:flex md:flex-col md:w-12"
+              : "hidden md:flex md:flex-col md:w-80 xl:w-96",
+        ].join(" ")}
       >
-        {/* Mobile: back button */}
+        {/* Mobile: back button (unchanged) */}
         {showScanPanel && (
           <div className="md:hidden px-4 py-2 border-b border-terminal-border">
             <button
@@ -320,7 +340,27 @@ export default function TerminalShell() {
             </button>
           </div>
         )}
-        <ReadableCompanion activeRoute={state.route} />
+
+        {/* Desktop: collapse/expand toggle handle — WI-1.1/1.2 */}
+        <button
+          onClick={() => setPanelCollapsed((c) => !c)}
+          aria-label={panelCollapsed ? "Expand panel" : "Collapse panel"}
+          aria-expanded={!panelCollapsed}
+          className={[
+            "hidden md:flex items-center justify-center",
+            "text-terminal-muted hover:text-terminal-text hover:bg-white/5 transition-colors",
+            panelCollapsed
+              ? "flex-1"
+              : "h-10 w-full border-b border-terminal-border flex-shrink-0",
+          ].join(" ")}
+        >
+          <span className="text-sm select-none leading-none">
+            {panelCollapsed ? "›" : "‹"}
+          </span>
+        </button>
+
+        {/* Panel content — hidden when collapsed on desktop */}
+        {(showScanPanel || !panelCollapsed) && <ReadableCompanion activeRoute={state.route} />}
       </div>
     </div>
   );
