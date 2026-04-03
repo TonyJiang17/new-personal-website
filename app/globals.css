@@ -3,13 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --terminal-bg: #0d0d0d;
-  --terminal-surface: #141414;
-  --terminal-border: #2a2a2a;
-  --terminal-text: #e8e8e8;
-  --terminal-muted: #6b7280;
-  --terminal-accent: #22d3ee;
-  --terminal-prompt: #22d3ee;
+  /* Modern dark (monochrome) */
+  --terminal-bg: #0b0f14;
+  --terminal-surface: #0f1620;
+  --terminal-border: rgba(255, 255, 255, 0.10);
+  --terminal-text: #e6edf7;
+  --terminal-muted: rgba(230, 237, 247, 0.55);
+
+  /* Single accent */
+  --terminal-accent: #5eead4;
+  --terminal-prompt: #5eead4;
 }
 
 * {

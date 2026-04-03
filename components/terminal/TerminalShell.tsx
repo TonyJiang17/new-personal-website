@@ -52,7 +52,7 @@ function ReadableCompanion({ activeRoute }: { activeRoute: RouteId }) {
   return (
     <aside aria-label="Readable companion — scan mode" className="flex flex-col h-full">
       {/* All sections stacked — always visible for recruiters */}
-      <div className="flex-1 overflow-y-auto px-5 py-4 space-y-6">
+      <div className="flex-1 overflow-y-auto px-6 py-5 space-y-8 leading-relaxed">
         {READABLE_SECTIONS.map(({ route, label }) => {
           const isActive = route === activeRoute;
           return (
@@ -109,6 +109,30 @@ function ReadableCompanion({ activeRoute }: { activeRoute: RouteId }) {
 // ---------------------------------------------------------------------------
 
 export default function TerminalShell() {
+  // Right panel collapse state (desktop). Persist in localStorage.
+  const [companionCollapsed, setCompanionCollapsed] = useState(false);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("companionCollapsed");
+      if (raw === "1") setCompanionCollapsed(true);
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  const toggleCompanionCollapsed = useCallback(() => {
+    setCompanionCollapsed((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem("companionCollapsed", next ? "1" : "0");
+      } catch {
+        // ignore
+      }
+      return next;
+    });
+  }, []);
+
   // Lazy init: runs client-side only (ssr:false import).
   // Reads initial route from URL query param ?r=<route> (WI-5.1).
   const [state, setState] = useState(() => {
@@ -304,13 +328,15 @@ export default function TerminalShell() {
       {/* ── Right: Readable companion ───────────────────────── */}
       <div
         className={`
-          w-80 xl:w-96 flex-shrink-0 bg-terminal-surface flex flex-col
-          ${showScanPanel ? "flex w-full md:w-80 xl:w-96" : "hidden md:flex"}
+          flex-shrink-0 flex flex-col
+          bg-terminal-surface/70 backdrop-blur-md border-l border-terminal-border/60
+          ${showScanPanel ? "flex w-full" : "hidden md:flex"}
+          ${companionCollapsed ? "md:w-14" : "md:w-[520px] xl:w-[560px]"}
         `}
       >
         {/* Mobile: back button */}
         {showScanPanel && (
-          <div className="md:hidden px-4 py-2 border-b border-terminal-border">
+          <div className="md:hidden px-4 py-2 border-b border-terminal-border/60">
             <button
               onClick={() => setShowScanPanel(false)}
               className="text-xs text-terminal-muted hover:text-terminal-text"
@@ -320,7 +346,36 @@ export default function TerminalShell() {
             </button>
           </div>
         )}
-        <ReadableCompanion activeRoute={state.route} />
+
+        {/* Desktop: collapse toggle */}
+        <div className="hidden md:flex items-center justify-between px-4 py-2 border-b border-terminal-border/60">
+          <div className="text-[11px] tracking-wide text-terminal-muted">
+            {companionCollapsed ? "Scan" : "Scan Mode"}
+          </div>
+          <button
+            onClick={toggleCompanionCollapsed}
+            className="text-xs text-terminal-muted hover:text-terminal-text"
+            aria-label={companionCollapsed ? "Expand scan panel" : "Collapse scan panel"}
+            title={companionCollapsed ? "Expand" : "Collapse"}
+          >
+            {companionCollapsed ? "«" : "»"}
+          </button>
+        </div>
+
+        {companionCollapsed ? (
+          <div className="hidden md:flex flex-1 items-center justify-center">
+            <button
+              onClick={toggleCompanionCollapsed}
+              className="text-terminal-accent hover:text-white"
+              aria-label="Expand scan panel"
+              title="Expand scan panel"
+            >
+              ▸
+            </button>
+          </div>
+        ) : (
+          <ReadableCompanion activeRoute={state.route} />
+        )}
       </div>
     </div>
   );
