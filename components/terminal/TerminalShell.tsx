@@ -347,18 +347,15 @@ export default function TerminalShell() {
           </div>
         )}
 
-        {/* Desktop: collapse toggle */}
-        <div className="hidden md:flex items-center justify-between px-4 py-2 border-b border-terminal-border/60">
-          <div className="text-[11px] tracking-wide text-terminal-muted">
-            {companionCollapsed ? "Scan" : "Scan Mode"}
-          </div>
+        {/* Desktop: collapse/expand handle (no header) */}
+        <div className="hidden md:flex items-center justify-end px-3 py-2 border-b border-terminal-border/40">
           <button
             onClick={toggleCompanionCollapsed}
-            className="text-xs text-terminal-muted hover:text-terminal-text"
-            aria-label={companionCollapsed ? "Expand scan panel" : "Collapse scan panel"}
+            className="h-8 w-10 rounded-md border border-terminal-border/50 bg-terminal-surface/40 text-terminal-muted hover:text-terminal-text hover:bg-terminal-surface/60"
+            aria-label={companionCollapsed ? "Expand panel" : "Collapse panel"}
             title={companionCollapsed ? "Expand" : "Collapse"}
           >
-            {companionCollapsed ? "«" : "»"}
+            <span className="text-base leading-none">{companionCollapsed ? "«" : "»"}</span>
           </button>
         </div>
 
@@ -366,11 +363,11 @@ export default function TerminalShell() {
           <div className="hidden md:flex flex-1 items-center justify-center">
             <button
               onClick={toggleCompanionCollapsed}
-              className="text-terminal-accent hover:text-white"
-              aria-label="Expand scan panel"
-              title="Expand scan panel"
+              className="h-12 w-10 rounded-md border border-terminal-border/50 bg-terminal-surface/30 text-terminal-accent hover:text-white hover:bg-terminal-surface/50"
+              aria-label="Expand panel"
+              title="Expand panel"
             >
-              ▸
+              <span className="text-lg leading-none">▸</span>
             </button>
           </div>
         ) : (
