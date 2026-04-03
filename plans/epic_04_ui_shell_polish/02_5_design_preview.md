@@ -1,7 +1,7 @@
 # 02.5 Design Preview — Epic 4
 
 ## Preview URL
-- URL: (pending)
+- URL: https://personalwebsiterebuild01-7w1h2xv0p.vercel.app
 
 ## What to review
 - Collapsed rail affordance + discoverability
@@ -10,7 +10,10 @@
 - Theme: monochrome + glass (no multi-color)
 
 ## Iteration log
-- v1: (pending)
+- v1: initial collapsible panel + wider expanded width + glass direction
+- v2: removed "Scan Mode" header; larger collapse control
+- v3: corrected expand arrow direction
+- v4: updated Tailwind theme tokens (modern monochrome + single accent)
 
 ## Design Freeze v1
 - Status: pending
