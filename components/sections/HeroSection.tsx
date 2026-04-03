@@ -88,7 +88,7 @@ function HeroReadable() {
       <p className="text-terminal-muted text-sm mb-3">{HERO_CONTENT.tagline}</p>
 
       {HERO_CONTENT.intro.map((line, i) => (
-        <p key={i} className="text-terminal-text text-sm mb-1">
+        <p key={i} className="text-terminal-text text-sm leading-relaxed mb-2">
           {line}
         </p>
       ))}

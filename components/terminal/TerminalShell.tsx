@@ -52,19 +52,19 @@ function ReadableCompanion({ activeRoute }: { activeRoute: RouteId }) {
   return (
     <aside aria-label="Readable companion — scan mode" className="flex flex-col h-full">
       {/* All sections stacked — always visible for recruiters */}
-      <div className="flex-1 overflow-y-auto px-5 py-4 space-y-6">
+      <div className="flex-1 overflow-y-auto px-6 py-5 space-y-8">
         {READABLE_SECTIONS.map(({ route, label }) => {
           const isActive = route === activeRoute;
           return (
             <section
               key={route}
               aria-label={label}
-              className={`pb-4 border-b border-terminal-border last:border-0 transition-opacity ${
+              className={`pb-6 border-b border-terminal-border last:border-0 transition-opacity ${
                 isActive ? "opacity-100" : "opacity-60 hover:opacity-90"
               }`}
             >
               {isActive && (
-                <div className="text-terminal-accent text-xs mb-1 font-semibold">▶ {label}</div>
+                <div className="text-terminal-accent text-xs mb-2 font-semibold">▶ {label}</div>
               )}
               <SectionRenderer route={route} variant="readable" />
             </section>
@@ -73,7 +73,7 @@ function ReadableCompanion({ activeRoute }: { activeRoute: RouteId }) {
       </div>
 
       {/* Footer — quick links */}
-      <div className="px-5 py-3 border-t border-terminal-border flex-shrink-0 flex flex-wrap gap-3">
+      <div className="px-6 py-4 border-t border-terminal-border flex-shrink-0 flex flex-wrap gap-3">
         <a
           href={contact.resumePath}
           target="_blank"
@@ -322,10 +322,10 @@ export default function TerminalShell() {
         className={[
           "flex-shrink-0 bg-terminal-surface",
           showScanPanel
-            ? "flex flex-col w-full md:w-80 xl:w-96"
+            ? "flex flex-col w-full md:w-[520px] xl:w-[560px]"
             : panelCollapsed
               ? "hidden md:flex md:flex-col md:w-12"
-              : "hidden md:flex md:flex-col md:w-80 xl:w-96",
+              : "hidden md:flex md:flex-col md:w-[520px] xl:w-[560px]",
         ].join(" ")}
       >
         {/* Mobile: back button (unchanged) */}

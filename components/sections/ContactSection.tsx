@@ -81,9 +81,9 @@ function ContactTerminal() {
 function ContactReadable() {
   return (
     <div>
-      <h2 className="text-base font-bold text-terminal-accent mb-3">Contact</h2>
+      <h2 className="text-lg font-bold text-terminal-accent mb-3">Contact</h2>
 
-      <div className="space-y-2">
+      <div className="space-y-3">
         <div>
           <span className="text-terminal-muted text-xs uppercase tracking-wide block mb-0.5">
             Email

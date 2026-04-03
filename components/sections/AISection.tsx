@@ -37,13 +37,13 @@ function AITerminal() {
 function AIReadable() {
   return (
     <div>
-      <h2 className="text-base font-bold text-terminal-accent mb-2">{AI_CONTENT.title}</h2>
-      <p className="text-terminal-text text-sm mb-3">{AI_CONTENT.summary}</p>
-      <ul className="space-y-1">
+      <h2 className="text-lg font-bold text-terminal-accent mb-2">{AI_CONTENT.title}</h2>
+      <p className="text-terminal-text text-sm leading-relaxed mb-3">{AI_CONTENT.summary}</p>
+      <ul className="space-y-2">
         {AI_CONTENT.details
           .filter((line) => line.startsWith("·"))
           .map((line, i) => (
-            <li key={i} className="text-terminal-muted text-xs">
+            <li key={i} className="text-terminal-muted text-sm">
               {line}
             </li>
           ))}

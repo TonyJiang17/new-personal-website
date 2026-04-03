@@ -91,13 +91,13 @@ function ProjectsTerminal({ projectName }: { projectName?: string }) {
 function ProjectsReadable() {
   return (
     <div>
-      <h2 className="text-base font-bold text-terminal-accent mb-2">{PROJECTS_CONTENT.title}</h2>
-      <p className="text-terminal-text text-sm mb-3">{PROJECTS_CONTENT.summary}</p>
-      <ul className="space-y-2">
+      <h2 className="text-lg font-bold text-terminal-accent mb-2">{PROJECTS_CONTENT.title}</h2>
+      <p className="text-terminal-text text-sm leading-relaxed mb-3">{PROJECTS_CONTENT.summary}</p>
+      <ul className="space-y-3">
         {Object.entries(KNOWN_PROJECTS).map(([id, proj]) => (
           <li key={id}>
-            <span className="text-terminal-green text-xs font-mono">{id}</span>
-            <span className="text-terminal-muted text-xs ml-2">— {proj.description}</span>
+            <span className="text-terminal-green text-sm font-mono">{id}</span>
+            <span className="text-terminal-muted text-sm ml-2">— {proj.description}</span>
           </li>
         ))}
       </ul>
