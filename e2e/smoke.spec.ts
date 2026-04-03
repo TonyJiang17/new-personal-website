@@ -62,8 +62,8 @@ test.describe("slash command routing — non-slash input", () => {
   test("typing unknown non-slash input triggers one chat exchange", async ({ page }) => {
     await page.goto("/");
 
-    const amberLines = page.locator("div.text-terminal-amber");
-    const before = await amberLines.count();
+    const systemRows = page.locator("[data-testid='system-row']");
+    const before = await systemRows.count();
 
     await typeCommand(page, "foobarqux");
 
@@ -75,7 +75,7 @@ test.describe("slash command routing — non-slash input", () => {
     // additional system output appeared.
     await expect
       .poll(async () => {
-        const after = await amberLines.count();
+        const after = await systemRows.count();
         return after;
       })
       .toBeGreaterThanOrEqual(before + 2);

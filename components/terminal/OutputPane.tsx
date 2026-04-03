@@ -76,7 +76,7 @@ function SystemRow({ text }: { text: string }) {
   const isError = text.startsWith("command not found");
 
   return (
-    <div className="font-mono text-xs pl-5 space-y-0.5">
+    <div className="font-mono text-xs pl-5 space-y-0.5" data-testid="system-row">
       {lines.map((line, i) => (
         <div
           key={i}
@@ -84,7 +84,7 @@ function SystemRow({ text }: { text: string }) {
             isError && i === 0
               ? "text-terminal-red"
               : i === 0
-                ? "text-terminal-amber"
+                ? "text-terminal-text"
                 : "text-terminal-muted"
           }
         >

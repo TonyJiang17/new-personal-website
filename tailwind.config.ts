@@ -11,15 +11,17 @@ const config: Config = {
     extend: {
       colors: {
         terminal: {
-          bg: "#0d0d0d",
-          surface: "#141414",
-          border: "#2a2a2a",
-          text: "#e8e8e8",
-          muted: "#6b7280",
+          bg: "#0a0a0a",
+          surface: "#111111",
+          border: "#222222",
+          text: "#e0e0e0",
+          muted: "#525252",
           accent: "#22d3ee",
-          green: "#4ade80",
-          amber: "#fbbf24",
-          red: "#f87171",
+          // Monochrome-neutralized tokens: dots are decorative (aria-hidden).
+          // `red` retains a muted reddish tone for error text semantics only.
+          red: "#c97070",
+          amber: "#3d3d3d",
+          green: "#2d2d2d",
           prompt: "#22d3ee",
         },
       },

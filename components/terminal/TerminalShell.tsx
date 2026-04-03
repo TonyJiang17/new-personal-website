@@ -266,16 +266,16 @@ export default function TerminalShell() {
     <div className="flex h-screen w-screen bg-terminal-bg text-terminal-text font-mono overflow-hidden">
       {/* ── Left: Terminal ──────────────────────────────────── */}
       <div
-        className={`flex flex-col min-w-0 border-r border-terminal-border ${
+        className={`flex flex-col min-w-0 ${
           showScanPanel ? "hidden md:flex md:flex-1" : "flex flex-1"
         }`}
       >
         {/* Terminal title bar */}
         <header className="relative flex items-center justify-between px-4 py-2 border-b border-terminal-border bg-terminal-surface flex-shrink-0">
           <div className="flex items-center gap-2" aria-hidden="true">
-            <span className="w-3 h-3 rounded-full bg-terminal-red inline-block" />
-            <span className="w-3 h-3 rounded-full bg-terminal-amber inline-block" />
-            <span className="w-3 h-3 rounded-full bg-terminal-green inline-block" />
+            <span className="w-3 h-3 rounded-full bg-[#3a3a3a] inline-block" />
+            <span className="w-3 h-3 rounded-full bg-[#333333] inline-block" />
+            <span className="w-3 h-3 rounded-full bg-[#2a2a2a] inline-block" />
           </div>
           <span className="text-terminal-muted text-xs absolute left-1/2 -translate-x-1/2 pointer-events-none">
             tony@personal ~{state.route !== "home" ? ` [${state.route}]` : ""}
@@ -320,7 +320,7 @@ export default function TerminalShell() {
       {/* Mobile: full-screen panel via showScanPanel. Desktop: rail (w-12) or full (w-80/96). */}
       <div
         className={[
-          "flex-shrink-0 bg-terminal-surface",
+          "flex-shrink-0 glass-panel",
           showScanPanel
             ? "flex flex-col w-full md:w-[520px] xl:w-[560px]"
             : panelCollapsed

@@ -3,13 +3,19 @@
 @tailwind utilities;
 
 :root {
-  --terminal-bg: #0d0d0d;
-  --terminal-surface: #141414;
-  --terminal-border: #2a2a2a;
-  --terminal-text: #e8e8e8;
-  --terminal-muted: #6b7280;
+  /* Base palette — matches tailwind.config.ts terminal.* tokens exactly */
+  --terminal-bg: #0a0a0a;
+  --terminal-surface: #111111;
+  --terminal-border: #222222;
+  --terminal-text: #e0e0e0;
+  --terminal-muted: #525252;
   --terminal-accent: #22d3ee;
   --terminal-prompt: #22d3ee;
+  /* Semantic status (muted; red retains slight warmth for error readability) */
+  --terminal-red: #c97070;
+  /* Glass layer tokens — applied via .glass-panel utility */
+  --glass-bg: rgba(255, 255, 255, 0.02);
+  --glass-border: rgba(255, 255, 255, 0.06);
 }
 
 * {
@@ -54,4 +60,12 @@ body {
 :focus-visible {
   outline: 2px solid var(--terminal-accent);
   outline-offset: 2px;
+}
+
+/* Glass panel — subtle frosted overlay for the right companion panel */
+.glass-panel {
+  background: var(--terminal-surface);
+  border-left: 1px solid var(--glass-border);
+  backdrop-filter: blur(8px) saturate(0.85);
+  -webkit-backdrop-filter: blur(8px) saturate(0.85);
 }
