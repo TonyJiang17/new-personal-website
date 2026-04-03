@@ -1,7 +1,7 @@
 # 02.5 Design Preview — Epic 4
 
 ## Preview URL
-- URL: https://personalwebsiterebuild01-7w1h2xv0p.vercel.app
+- URL: https://personalwebsiterebuild01-w9h0lq3r2.vercel.app
 
 ## What to review
 - Collapsed rail affordance + discoverability
