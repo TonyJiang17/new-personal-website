@@ -367,7 +367,7 @@ export default function TerminalShell() {
               aria-label="Expand panel"
               title="Expand panel"
             >
-              <span className="text-lg leading-none">▸</span>
+              <span className="text-lg leading-none">◂</span>
             </button>
           </div>
         ) : (
