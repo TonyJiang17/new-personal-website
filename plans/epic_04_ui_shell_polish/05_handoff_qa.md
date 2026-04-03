@@ -6,7 +6,7 @@
 - Production deploy: out-of-band; explicitly requested by Tony
 
 ## Staging deployment
-- Preview URL: https://personalwebsiterebuild01-6m9q3v7n1.vercel.app
+- Preview URL: https://personalwebsiterebuild01-2c7kq5m9h.vercel.app
 - Deployment method: Vercel (preview)
 - Git ref: main
 - Date: 2026-04-03
