@@ -11,16 +11,18 @@ const config: Config = {
     extend: {
       colors: {
         terminal: {
-          bg: "#0d0d0d",
-          surface: "#141414",
-          border: "#2a2a2a",
-          text: "#e8e8e8",
-          muted: "#6b7280",
-          accent: "#22d3ee",
-          green: "#4ade80",
+          // Modern monochrome + single accent
+          bg: "#0b0f14",
+          surface: "#0f1620",
+          border: "rgba(255, 255, 255, 0.10)",
+          text: "#e6edf7",
+          muted: "rgba(230, 237, 247, 0.55)",
+          accent: "#5eead4",
+          // Status colors (kept minimal)
+          green: "#34d399",
           amber: "#fbbf24",
-          red: "#f87171",
-          prompt: "#22d3ee",
+          red: "#fb7185",
+          prompt: "#5eead4",
         },
       },
       fontFamily: {
